@@ -1,6 +1,7 @@
 # Shorty!
 
-Url shortner with next, postgresql, prisma and tailwind
+url shortner with next, postgresql, prisma and tailwind.
+(ondev, backend finished, just the ui remaining)
 
 ## Getting Started
 
