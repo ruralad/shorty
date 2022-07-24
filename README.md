@@ -1,7 +1,7 @@
 # Shorty!
 
-url shortner with next, postgresql, prisma and tailwind.
-(ondev, backend finished, just the ui remaining)
+-url shortner with next, postgresql, prisma, trpc and tailwind.
+-database hosted on railway.app
 
 ## Getting Started
 
