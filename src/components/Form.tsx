@@ -4,6 +4,8 @@ import debounce from "lodash/debounce";
 import { trpc } from "../../utils/trpc";
 import { nanoid } from "nanoid";
 
+import { TiClipboard } from "react-icons/ti";
+
 type Form = {
   slug: string;
   url: string;
@@ -11,6 +13,8 @@ type Form = {
 
 const Form: NextPage = () => {
   const [form, setForm] = useState<Form>({ slug: "", url: "" });
+  const [copied, setCopied] = useState<Boolean>(false);
+
   const url = window.location.origin;
 
   const slugCheck = trpc.useQuery(["slugCheck", { slug: form.slug }], {
@@ -20,11 +24,27 @@ const Form: NextPage = () => {
   });
 
   const createSlug = trpc.useMutation(["createSlug"]);
+
+  const copyToClipBoard = () => {
+    navigator.clipboard.writeText(`${url}/${form.slug}`);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  };
   if (createSlug.status === "success") {
     return (
       <>
         <div className="flex justify-center items-center">
-          <h1>{`${url}/${form.slug}`}</h1>
+          <h3 className="underline">{`${url}/${form.slug}`}</h3>
+          <span className="relative ml-3 p-1 rounded cursor-pointer flex items-center">
+            <span onClick={copyToClipBoard}>
+              <TiClipboard size={25} />{" "}
+            </span>
+            {copied && (
+              <span className="absolute text-gray-600 ml-8">copied!</span>
+            )}
+          </span>
         </div>
         <input
           type="button"
