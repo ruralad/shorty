@@ -1,10 +1,18 @@
 import "../styles/globals.css";
+import Head from "next/head";
 import type { AppProps } from "next/app";
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "./api/trpc/[trpc]";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <>
+      <Head>
+        <title>Shorty | URL Shortner</title>
+      </Head>
+      <Component {...pageProps} />;
+    </>
+  );
 }
 
 function getBaseUrl() {
