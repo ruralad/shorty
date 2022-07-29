@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import debounce from "lodash/debounce";
 import { trpc } from "../../utils/trpc";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 
 import { TiClipboard } from "react-icons/ti";
 
@@ -41,15 +41,13 @@ const Form: NextPage = () => {
             <span onClick={copyToClipBoard}>
               <TiClipboard size={25} />{" "}
             </span>
-            {copied && (
-              <span className="absolute text-gray-600 ml-8">copied!</span>
-            )}
+            {copied && <span className="absolute ml-8">copied!</span>}
           </span>
         </div>
         <input
           type="button"
           value="shorten another url"
-          className="bg-gray-200 p-2 mt-5 rounded cursor-pointer"
+          className="bg-gray-200 p-2 mt-5 rounded cursor-pointer dark:text-black"
           onClick={() => {
             createSlug.reset();
             setForm({ slug: "", url: "" });
@@ -78,7 +76,7 @@ const Form: NextPage = () => {
         <input
           type="text"
           className={
-            `rounded bg-gray-100 p-2 outline-none text-black ml-1 border-2 border-gray-100` +
+            `rounded  p-2 outline-none  ml-1 border-2 border-gray-100 dark:placeholder:text-gray-600  ` +
             (slugCheck.data?.used ? ` border-red-500` : ``) +
             (!slugCheck.data?.used && form.slug ? ` border-green-500` : ``)
           }
@@ -100,9 +98,13 @@ const Form: NextPage = () => {
         <input
           type="button"
           value="random"
-          className="rounded border border-gray-200 text-gray-500 p-2 cursor-pointer ml-2"
+          className="rounded border border-gray-200 p-2 cursor-pointer ml-2"
           onClick={() => {
-            const slug = nanoid(12);
+            const nanoid = customAlphabet(
+              "123456789abcdefghijklmnopqrstwxyzABCDEFGHIJKLMNOPQRSTWXYZ-",
+              12
+            );
+            const slug = nanoid();
             setForm({
               ...form,
               slug,
@@ -115,7 +117,7 @@ const Form: NextPage = () => {
         <span>link</span>
         <input
           type="url"
-          className="rounded bg-gray-100 p-2 outline-none text-black ml-3 w-full"
+          className="rounded border-2 p-2 outline-none  ml-3 w-full dark:placeholder:text-gray-600"
           placeholder="https://lengthyURLyouneedtoshorten.com/nicePage"
           minLength={1}
           onChange={(e) => setForm({ ...form, url: e.target.value })}
@@ -125,7 +127,7 @@ const Form: NextPage = () => {
       <input
         type="submit"
         value="shorten"
-        className="rounded w-full bg-gray-800 text-white p-1 font-bold cursor-pointer mt-3 "
+        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-3 text-white dark:text-black"
         disabled={slugCheck.isFetched && slugCheck.data?.used}
       />
     </form>

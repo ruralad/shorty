@@ -1,17 +1,21 @@
 import "../styles/globals.css";
+
 import Head from "next/head";
 import type { AppProps } from "next/app";
+
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "./api/trpc/[trpc]";
 
+import { ThemeProvider } from "next-themes";
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <ThemeProvider>
       <Head>
         <title>Shorty | URL Shortner</title>
       </Head>
       <Component {...pageProps} />;
-    </>
+    </ThemeProvider>
   );
 }
 
