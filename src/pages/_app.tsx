@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Shorty | URL Shortner</title>
       </Head>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </ThemeProvider>
   );
 }
