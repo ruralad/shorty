@@ -22,7 +22,7 @@ const Home: NextPage = () => {
   if (!mounted) return null;
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen bg-gray-950">
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-950 p-2">
       <Suspense>
         <div
           className="absolute top-5 right-5 cursor-pointer"

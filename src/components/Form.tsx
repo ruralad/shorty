@@ -47,7 +47,7 @@ const Form: NextPage = () => {
         <input
           type="button"
           value="shorten another url"
-          className="bg-gray-200 p-2 mt-5 rounded cursor-pointer dark:text-black"
+          className="border-2 border-gray-500 p-2 mt-5 rounded cursor-pointer dark:text-black"
           onClick={() => {
             createSlug.reset();
             setForm({ slug: "", url: "" });
@@ -65,18 +65,31 @@ const Form: NextPage = () => {
         createSlug.mutate({ ...form });
       }}
     >
-      {/* {slugCheck.data?.used && (
-        <span className="text-red-500">not available :(</span>
-      )} */}
-      {/* {!slugCheck.data?.used && form.slug && (
-        <span className="absolute text-green-500">available</span>
-      )} */}
-      <div className="flex items-center">
+      {/* <div className="absolute right-0 -top-10">
+        {slugCheck.data?.used && (
+          <span className=" text-red-500">already in use</span>
+        )}
+        {!slugCheck.data?.used && form.slug && (
+          <span className=" text-green-500">available</span>
+        )}
+      </div> */}
+      <div className=" flex items-center">
+        <span>link</span>
+        <input
+          type="url"
+          className="rounded border-2 p-2 outline-none  ml-3 w-full dark:placeholder:text-gray-600"
+          placeholder="https://lengthyURLyouneedtoshorten.co"
+          minLength={1}
+          onChange={(e) => setForm({ ...form, url: e.target.value })}
+          required
+        />
+      </div>
+      <div className="flex items-center flex-col md:flex-row gap-1 mt-8">
         <p>{url}/</p>
         <input
           type="text"
           className={
-            `rounded  p-2 outline-none  ml-1 border-2 border-gray-100 dark:placeholder:text-gray-600  ` +
+            ` outline-none  ml-1 border-b-2 dark:placeholder:text-gray-600 bg-transparent w-36  ` +
             (slugCheck.data?.used ? ` border-red-500` : ``) +
             (!slugCheck.data?.used && form.slug ? ` border-green-500` : ``)
           }
@@ -98,7 +111,7 @@ const Form: NextPage = () => {
         <input
           type="button"
           value="random"
-          className="rounded border border-gray-200 p-2 cursor-pointer ml-2"
+          className="rounded border border-gray-200 px-1 cursor-pointer ml-2 mt-3 md:mt-0"
           onClick={() => {
             const nanoid = customAlphabet(
               "123456789abcdefghijklmnopqrstwxyzABCDEFGHIJKLMNOPQRSTWXYZ-",
@@ -113,21 +126,10 @@ const Form: NextPage = () => {
           }}
         />
       </div>
-      <div className="mt-3 flex items-center">
-        <span>link</span>
-        <input
-          type="url"
-          className="rounded border-2 p-2 outline-none  ml-3 w-full dark:placeholder:text-gray-600"
-          placeholder="https://lengthyURLyouneedtoshorten.com/nicePage"
-          minLength={1}
-          onChange={(e) => setForm({ ...form, url: e.target.value })}
-          required
-        />
-      </div>
       <input
         type="submit"
         value="shorten"
-        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-3 text-white dark:text-black"
+        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-8 text-white dark:text-black"
         disabled={slugCheck.isFetched && slugCheck.data?.used}
       />
     </form>
