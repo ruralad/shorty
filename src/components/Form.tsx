@@ -84,7 +84,7 @@ const Form: NextPage = () => {
           required
         />
       </div>
-      <div className="flex items-center flex-col md:flex-row gap-1 mt-8">
+      <div className="flex items-center flex-col md:flex-row gap-1 mt-8 text-center">
         <p>{url}/</p>
         <input
           type="text"
