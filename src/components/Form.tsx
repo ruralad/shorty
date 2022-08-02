@@ -11,11 +11,15 @@ type Form = {
   url: string;
 };
 
-const Form: NextPage = () => {
+interface fetchProps {
+  fetchCount: () => any;
+}
+
+const Form = ({ fetchCount }: fetchProps) => {
   const [form, setForm] = useState<Form>({ slug: "", url: "" });
   const [copied, setCopied] = useState<Boolean>(false);
 
-  const url = window.location.origin;
+  const url = window.location.host;
 
   const slugCheck = trpc.useQuery(["slugCheck", { slug: form.slug }], {
     refetchOnReconnect: false,
@@ -32,6 +36,13 @@ const Form: NextPage = () => {
       setCopied(false);
     }, 3000);
   };
+
+  const refreshCount = () => {
+    setTimeout(() => {
+      fetchCount();
+    }, 3000);
+  };
+
   if (createSlug.status === "success") {
     return (
       <>
@@ -63,6 +74,7 @@ const Form: NextPage = () => {
       onSubmit={(e) => {
         e.preventDefault();
         createSlug.mutate({ ...form });
+        refreshCount();
       }}
     >
       {/* <div className="absolute right-0 -top-10">
@@ -77,7 +89,7 @@ const Form: NextPage = () => {
         <span>link</span>
         <input
           type="url"
-          className="rounded border-2 p-2 outline-none  ml-3 w-full dark:placeholder:text-gray-600"
+          className="rounded border-2 border-gray-800 dark:border-gray-200 p-2 outline-none  ml-3 w-full dark:placeholder:text-gray-600"
           placeholder="https://lengthyURLyouneedtoshorten.co"
           minLength={1}
           onChange={(e) => setForm({ ...form, url: e.target.value })}
@@ -89,7 +101,7 @@ const Form: NextPage = () => {
         <input
           type="text"
           className={
-            ` outline-none  ml-1 border-b-2 dark:placeholder:text-gray-600 bg-transparent w-36  ` +
+            ` outline-none  ml-1 border-b-2 dark:placeholder:text-gray-600 bg-transparent w-36 text-center ` +
             (slugCheck.data?.used ? ` border-red-500` : ``) +
             (!slugCheck.data?.used && form.slug ? ` border-green-500` : ``)
           }
@@ -129,7 +141,7 @@ const Form: NextPage = () => {
       <input
         type="submit"
         value="shorten"
-        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-8 text-white dark:text-black"
+        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-8 text-white dark:text-black disabled:text-red-900"
         disabled={slugCheck.isFetched && slugCheck.data?.used}
       />
     </form>
