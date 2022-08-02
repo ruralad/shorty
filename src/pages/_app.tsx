@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
       <Head>
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" />
         <title>Shorty | URL Shortner</title>
       </Head>
       <Component {...pageProps} />
