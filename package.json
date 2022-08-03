@@ -1,6 +1,6 @@
 {
   "name": "shorty",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^4.1.0",
+    "@radix-ui/react-icons": "^1.1.1",
     "@trpc/client": "^9.26.2",
     "@trpc/next": "^9.26.2",
     "@trpc/react": "^9.26.2",
