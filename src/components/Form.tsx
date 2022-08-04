@@ -1,8 +1,7 @@
-import type { NextPage } from "next";
-import { useEffect, useState } from "react";
 import debounce from "lodash/debounce";
-import { trpc } from "../../utils/trpc";
 import { customAlphabet } from "nanoid";
+import { useState } from "react";
+import { trpc } from "../../utils/trpc";
 
 import { TiClipboard } from "react-icons/ti";
 
@@ -100,11 +99,9 @@ const Form = ({ fetchCount }: fetchProps) => {
         <p>{url}/</p>
         <input
           type="text"
-          className={
-            ` outline-none  ml-1 border-b-2 dark:placeholder:text-gray-600 bg-transparent w-36 text-center ` +
-            (slugCheck.data?.used ? ` border-red-500` : ``) +
-            (!slugCheck.data?.used && form.slug ? ` border-green-500` : ``)
-          }
+          className={` outline-none  ml-1 border-b-2 dark:placeholder:text-gray-600 bg-transparent w-36 ${
+            slugCheck.data?.used ? ` border-red-500` : ``
+          } ${!slugCheck.data?.used && form.slug ? `border-green-500` : ``}`}
           placeholder="kewlSite"
           minLength={1}
           maxLength={30}
@@ -141,7 +138,7 @@ const Form = ({ fetchCount }: fetchProps) => {
       <input
         type="submit"
         value="shorten"
-        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-8 text-white dark:text-black disabled:text-red-900"
+        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-8 text-white dark:text-black disabled:text-red-900 disabled:cursor-not-allowed"
         disabled={slugCheck.isFetched && slugCheck.data?.used}
       />
     </form>

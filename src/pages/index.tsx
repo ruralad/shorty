@@ -1,11 +1,10 @@
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 
-import { Suspense } from "react";
-import { useState, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-import { useTheme } from "next-themes";
 import { GitHubLogoIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
 
 const Form = dynamic(() => import("../components/Form"), {
   ssr: false,

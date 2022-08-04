@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 
-import Head from "next/head";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 
 import { withTRPC } from "@trpc/next";
 import { AppRouter } from "./api/trpc/[trpc]";
