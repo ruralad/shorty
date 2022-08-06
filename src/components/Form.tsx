@@ -85,11 +85,10 @@ const Form = ({ fetchCount }: fetchProps) => {
         )}
       </div> */}
       <div className=" flex items-center">
-        <span>link</span>
         <input
           type="url"
-          className="rounded border-2 border-gray-800 dark:border-gray-200 p-2 outline-none  ml-3 w-full dark:placeholder:text-gray-600"
-          placeholder="https://lengthyURLyouneedtoshorten.co"
+          className="rounded border-2 border-gray-800 dark:border-gray-200 p-2 outline-none w-full dark:placeholder:text-gray-600"
+          placeholder="your lengthy url"
           minLength={1}
           onChange={(e) => setForm({ ...form, url: e.target.value })}
           required
