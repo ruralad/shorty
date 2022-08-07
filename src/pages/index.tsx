@@ -31,7 +31,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-gray-950 p-2">
       <Suspense>
-        <div className="absolute top-5 right-5 cursor-pointer flex gap-5">
+        <nav className="absolute top-5 right-5 cursor-pointer flex gap-5">
           <a
             href="https://github.com/ruralad/shorty"
             target="_blank"
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
           >
             {theme === "light" ? <SunIcon /> : <MoonIcon />}
           </span>
-        </div>
+        </nav>
         <Form fetchCount={fetchCount} />
 
         {totalCount && (

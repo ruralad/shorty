@@ -1,8 +1,9 @@
 import debounce from "lodash/debounce";
 import { customAlphabet } from "nanoid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 
+import { GearIcon } from "@radix-ui/react-icons";
 import { TiClipboard } from "react-icons/ti";
 
 type Form = {
@@ -18,6 +19,8 @@ const Form = ({ fetchCount }: fetchProps) => {
   const [form, setForm] = useState<Form>({ slug: "", url: "" });
   const [copied, setCopied] = useState<Boolean>(false);
 
+  const [customize, setCustomize] = useState(false);
+
   const url = window.location.host;
 
   const slugCheck = trpc.useQuery(["slugCheck", { slug: form.slug }], {
@@ -28,6 +31,18 @@ const Form = ({ fetchCount }: fetchProps) => {
 
   const createSlug = trpc.useMutation(["createSlug"]);
 
+  const randomSlug = () => {
+    const nanoid = customAlphabet(
+      "123456789abcdefghijklmnopqrstwxyzABCDEFGHIJKLMNOPQRSTWXYZ-",
+      8
+    );
+    const slug = nanoid();
+    setForm({
+      ...form,
+      slug,
+    });
+    slugCheck.refetch();
+  };
   const copyToClipBoard = () => {
     navigator.clipboard.writeText(`${url}/${form.slug}`);
     setCopied(true);
@@ -41,6 +56,10 @@ const Form = ({ fetchCount }: fetchProps) => {
       fetchCount();
     }, 3000);
   };
+
+  useEffect(() => {
+    randomSlug();
+  }, []);
 
   if (createSlug.status === "success") {
     return (
@@ -61,6 +80,7 @@ const Form = ({ fetchCount }: fetchProps) => {
           onClick={() => {
             createSlug.reset();
             setForm({ slug: "", url: "" });
+            randomSlug();
           }}
         />
       </>
@@ -73,6 +93,7 @@ const Form = ({ fetchCount }: fetchProps) => {
       onSubmit={(e) => {
         e.preventDefault();
         createSlug.mutate({ ...form });
+        setCustomize(false);
         refreshCount();
       }}
     >
@@ -84,62 +105,68 @@ const Form = ({ fetchCount }: fetchProps) => {
           <span className=" text-green-500">available</span>
         )}
       </div> */}
-      <div className=" flex items-center">
-        <input
-          type="url"
-          className="rounded border-2 border-gray-800 dark:border-gray-200 p-2 outline-none w-full dark:placeholder:text-gray-600"
-          placeholder="your lengthy url"
-          minLength={1}
-          onChange={(e) => setForm({ ...form, url: e.target.value })}
-          required
-        />
+      <div className="flex flex-col items-center text-center">
+        <div className="flex items-center p-2">
+          <input
+            type="url"
+            className=" border-2 border-gray-800 dark:border-gray-200 p-2 outline-none  ml-3 dark:placeholder:text-gray-600"
+            placeholder="url"
+            minLength={1}
+            onChange={(e) => setForm({ ...form, url: e.target.value })}
+            required
+          />
+          <input
+            type="submit"
+            value="shorten"
+            className=" border-2 border-gray-800 w-full bg-gray-800 p-2 font-bold cursor-pointer text-white disabled:text-red-900 disabled:cursor-not-allowed"
+            disabled={slugCheck.isFetched && slugCheck.data?.used}
+          />
+        </div>
+        {!customize && (
+          <div
+            className="flex items-center gap-2 my-4 text-gray-500 cursor-pointer"
+            onClick={() => setCustomize(true)}
+          >
+            <GearIcon />
+            <span>Customize</span>
+          </div>
+        )}
+        {customize && (
+          <div className="flex flex-col md:flex-row items-center mt-5">
+            <div className="flex p-2">
+              <p>{url}/</p>
+              <input
+                type="text"
+                className={` outline-none  ml-1 border-b-2 dark:placeholder:text-gray-600 bg-transparent w-28 ${
+                  slugCheck.data?.used ? ` border-red-500` : ``
+                } ${
+                  !slugCheck.data?.used && form.slug ? `border-green-500` : ``
+                }`}
+                placeholder="kewlSite"
+                minLength={1}
+                maxLength={30}
+                onChange={(e) => {
+                  setForm({
+                    ...form,
+                    slug: e.target.value,
+                  });
+                  debounce(slugCheck.refetch, 100);
+                }}
+                value={form.slug}
+                pattern={"^[-a-zA-Z0-9]+$"}
+                title="Only alphanumeric characters and hypens are allowed. No spaces."
+                required
+              />
+            </div>
+            <input
+              type="button"
+              value="random"
+              className="rounded border border-gray-200 px-1 cursor-pointer ml-2 mt-3 md:mt-0"
+              onClick={randomSlug}
+            />
+          </div>
+        )}
       </div>
-      <div className="flex items-center flex-col md:flex-row gap-1 mt-8 text-center">
-        <p>{url}/</p>
-        <input
-          type="text"
-          className={` outline-none  ml-1 border-b-2 dark:placeholder:text-gray-600 bg-transparent w-36 ${
-            slugCheck.data?.used ? ` border-red-500` : ``
-          } ${!slugCheck.data?.used && form.slug ? `border-green-500` : ``}`}
-          placeholder="kewlSite"
-          minLength={1}
-          maxLength={30}
-          onChange={(e) => {
-            setForm({
-              ...form,
-              slug: e.target.value,
-            });
-            debounce(slugCheck.refetch, 100);
-          }}
-          value={form.slug}
-          pattern={"^[-a-zA-Z0-9]+$"}
-          title="Only alphanumeric characters and hypens are allowed. No spaces."
-          required
-        />
-        <input
-          type="button"
-          value="random"
-          className="rounded border border-gray-200 px-1 cursor-pointer ml-2 mt-3 md:mt-0"
-          onClick={() => {
-            const nanoid = customAlphabet(
-              "123456789abcdefghijklmnopqrstwxyzABCDEFGHIJKLMNOPQRSTWXYZ-",
-              12
-            );
-            const slug = nanoid();
-            setForm({
-              ...form,
-              slug,
-            });
-            slugCheck.refetch();
-          }}
-        />
-      </div>
-      <input
-        type="submit"
-        value="shorten"
-        className="rounded w-full bg-gray-800 dark:bg-gray-200 p-1 font-bold cursor-pointer mt-8 text-white dark:text-black disabled:text-red-900 disabled:cursor-not-allowed"
-        disabled={slugCheck.isFetched && slugCheck.data?.used}
-      />
     </form>
   );
 };
