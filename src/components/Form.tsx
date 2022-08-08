@@ -105,7 +105,7 @@ const Form = ({ fetchCount }: fetchProps) => {
           <span className=" text-green-500">available</span>
         )}
       </div> */}
-      <div className="flex flex-col items-center text-center">
+      <div className=" flex flex-col items-center text-center">
         <div className="flex items-center p-2">
           <input
             type="url"
@@ -122,17 +122,19 @@ const Form = ({ fetchCount }: fetchProps) => {
             disabled={slugCheck.isFetched && slugCheck.data?.used}
           />
         </div>
-        {!customize && (
-          <div
-            className="flex items-center gap-2 my-4 text-gray-500 cursor-pointer"
-            onClick={() => setCustomize(true)}
-          >
-            <GearIcon />
-            <span>Customize</span>
-          </div>
-        )}
+        <div
+          className={
+            ` flex items-center gap-2 my-4 cursor-pointer ` +
+            (customize ? `opacity-100` : `opacity-50`)
+          }
+          onClick={() => setCustomize(!customize)}
+        >
+          <GearIcon />
+          <span>Customize</span>
+        </div>
+
         {customize && (
-          <div className="flex flex-col md:flex-row items-center mt-5">
+          <div className=" flex flex-col md:flex-row items-center mt-1 showSlowly">
             <div className="flex p-2">
               <p>{url}/</p>
               <input
