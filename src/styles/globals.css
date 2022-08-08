@@ -16,11 +16,22 @@ body {
   font-size: calc(12px + 0.33vw);
   color: var(--text-color);
 
-  transition: all 0.5s ease;
-
   -webkit-tap-highlight-color: transparent;
 }
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+.showSlowly {
+  animation: animate 0.5s ease-in;
+}
+
+@keyframes animate {
+  0% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
